@@ -52,7 +52,7 @@
                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Disable</button>
                                 {{else}}
                                     <form method="post" id="enable-2fa" action="/account/security/2fa/enable-totp">
-                                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                                        <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
                                         <button type="submit" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Enable</button>
                                     </form>
                                 {{/if}}
@@ -73,7 +73,7 @@
                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#revokeModal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Disable</button>
                                 {{else}}
                                     <form method="post" id="enable-u2f" action="/account/security/2fa/enable-u2f">
-                                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                                        <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
                                         <button type="submit" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Enable</button>
                                     </form>
                                 {{/if}}
@@ -100,7 +100,7 @@
       </div>
       <div class="modal-footer">
         <form method="post" action="/account/security/2fa/disable-totp">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
             <button type="button" class="btn btn-default" data-dismiss="modal">No, cancel</button>
             <button type="submit" class="btn btn-danger bulk-delete-confirm">Yes, disable</button>
         </form>
@@ -121,7 +121,7 @@
       </div>
       <div class="modal-footer">
         <form method="post" action="/account/security/2fa/disable-u2f">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
             <button type="button" class="btn btn-default" data-dismiss="modal">No, cancel</button>
             <button type="submit" class="btn btn-danger bulk-delete-confirm">Yes, revoke</button>
         </form>

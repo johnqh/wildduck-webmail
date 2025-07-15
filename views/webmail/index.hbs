@@ -180,7 +180,7 @@
     {{{messageRowTemplate}}}
 </script>
 
-<input type="hidden" id="_csrf" value="{{csrfToken}}">
+<!-- <input type="hidden" id="_csrf" value="{{csrfToken}}"> -->
 <input type="hidden" id="mailbox" value="{{mailbox.id}}">
 <input type="hidden" id="cursor-type" value="{{cursorType}}">
 <input type="hidden" id="cursor-value" value="{{cursorValue}}">
@@ -214,7 +214,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: elm.dataset.mailbox,
                     message: elm.dataset.message,
                     flagged: !flagged // toggle
@@ -348,7 +348,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: document.getElementById('mailbox').value,
                     cursorType: document.getElementById('cursor-type').value,
                     cursorValue: document.getElementById('cursor-value').value,
@@ -433,7 +433,7 @@
                     },
                     credentials: 'include',
                     body: JSON.stringify({
-                        _csrf: document.getElementById('_csrf').value,
+                        // _csrf: document.getElementById('_csrf').value,
                         mailbox: mailbox,
                         message: messages.join(','),
                         seen: !!seen
@@ -545,7 +545,7 @@
                     },
                     credentials: 'include',
                     body: JSON.stringify({
-                        _csrf: document.getElementById('_csrf').value,
+                        // _csrf: document.getElementById('_csrf').value,
                         mailbox: mailbox,
                         message: messages.join(',')
                     })
@@ -642,7 +642,7 @@
                     },
                     credentials: 'include',
                     body: JSON.stringify({
-                        _csrf: document.getElementById('_csrf').value,
+                        // _csrf: document.getElementById('_csrf').value,
                         mailbox: mailbox,
                         message: messages.join(','),
                         target: targetMailbox
