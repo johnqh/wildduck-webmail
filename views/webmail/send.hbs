@@ -1,7 +1,7 @@
 
 
 <form method="post" id="send-form" class="form-horizontal" action="/webmail/send" enctype="multipart/form-data">
-    <input type="hidden" id="_csrf" name="_csrf" value="{{csrfToken}}">
+    <!-- <input type="hidden" id="_csrf" name="_csrf" value="{{csrfToken}}"> -->
     <input type="hidden" name="action" value="{{values.action}}">
     <input type="hidden" name="refMailbox" value="{{values.refMailbox}}">
     <input type="hidden" name="refMessage" value="{{values.refMessage}}">
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             credentials: 'include',
             body: JSON.stringify({
-                _csrf: document.getElementById('_csrf').value,
+                // _csrf: document.getElementById('_csrf').value,
                 mailbox: elm.dataset.mailbox,
                 message: elm.dataset.message,
                 flagged: !flagged // toggle
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             credentials: 'include',
             body: JSON.stringify({
-                _csrf: document.getElementById('_csrf').value,
+                // _csrf: document.getElementById('_csrf').value,
                 mailbox: mailbox,
                 message: message
             })

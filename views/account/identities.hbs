@@ -109,7 +109,7 @@
       </div>
       <div class="modal-footer">
         <form method="post" action="/account/identities/delete">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
             <input type="hidden" id="delete-form-identity" name="id" value="">
             <button type="button" class="btn btn-default" data-dismiss="modal">No, cancel</button>
             <button type="submit" class="btn btn-danger bulk-delete-confirm">Yes, delete</button>

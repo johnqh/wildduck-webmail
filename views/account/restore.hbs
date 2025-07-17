@@ -24,7 +24,7 @@
                     <div class="panel-body">
 
                         <form method="post" action="/account/restore">
-                            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
                             <input type="hidden" id="start" name="start"
                                 value="{{#if values.start}}{{values.start}}{{/if}}" />
                             <input type="hidden" id="end" name="end" value="{{#if values.end}}{{values.end}}{{/if}}" />

@@ -1,6 +1,6 @@
 <input type="hidden" id="mailbox" value="{{mailbox.id}}" />
 <input type="hidden" id="message" value="{{message.id}}" />
-<input type="hidden" id="_csrf" value="{{csrfToken}}">
+<!-- <input type="hidden" id="_csrf" value="{{csrfToken}}"> -->
 
 <h2 class="sub-header" style="display: flex;">
     <div style="flex-grow: 1">
@@ -369,7 +369,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: elm.dataset.mailbox,
                     message: elm.dataset.message,
                     flagged: !flagged // toggle
@@ -440,7 +440,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: mailbox,
                     message: message,
                     seen: !!seen
@@ -496,7 +496,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: mailbox,
                     message: message
                 })
@@ -545,7 +545,7 @@
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    _csrf: document.getElementById('_csrf').value,
+                    // _csrf: document.getElementById('_csrf').value,
                     mailbox: mailbox,
                     message: message,
                     target: targetMailbox

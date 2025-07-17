@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-12">
         <form method="post" action="/account/autoreply">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
             <input type="hidden" id="start" name="start" value="{{#if values.start}}{{values.start}}{{/if}}" />
             <input type="hidden" id="end" name="end" value="{{#if values.end}}{{values.end}}{{/if}}" />
 

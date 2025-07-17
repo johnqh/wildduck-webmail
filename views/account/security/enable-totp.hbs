@@ -1,34 +1,38 @@
-<form id="totp-form">
-    <input type="hidden" id="_csrf" value="{{csrfToken}}">
+<form id='totp-form'>
+    <!-- <input type="hidden" id="_csrf" value="{{csrfToken}}"> -->
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> Two factor authentication</h3>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'><span class='glyphicon glyphicon-lock' aria-hidden='true'></span> Two factor authentication</h3>
         </div>
-        <div class="panel-body">
+        <div class='panel-body'>
 
             <p>
                 Scan the code with an authenticator app and enter resulting security code below to verify
             </p>
 
-            <p class="lead text-center">
-                <img src="{{imageUrl}}" style="width: 200px;" width="200">
+            <p class='lead text-center'>
+                <img src='{{imageUrl}}' style='width: 200px;' width='200' />
             </p>
 
-            <div class="form-group" id="totp-token-field">
-                <label for="token">Security code</label>
-                <input type="number" class="form-control" id="token" placeholder="6 digit code" required autofocus>
-                <span class="help-block" id="totp-token-error" style="display: none"></span>
+            <div class='form-group' id='totp-token-field'>
+                <label for='token'>Security code</label>
+                <input type='number' class='form-control' id='token' placeholder='6 digit code' required autofocus />
+                <span class='help-block' id='totp-token-error' style='display: none'></span>
             </div>
 
             <div>
-                <div class="pull-right">
-                    <button type="submit" id="totp-btn" class="btn btn-success" data-loading-text="Checking..."><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Verify</button>
+                <div class='pull-right'>
+                    <button type='submit' id='totp-btn' class='btn btn-success' data-loading-text='Checking...'><span
+                            class='glyphicon glyphicon-ok'
+                            aria-hidden='true'
+                        ></span>
+                        Verify</button>
                 </div>
-                <a href="/account/security"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Cancel</a>
+                <a href='/account/security'><span class='glyphicon glyphicon-arrow-left' aria-hidden='true'></span> Cancel</a>
             </div>
         </div>
     </div>
 </form>
 
-<script src="/enable-totp.js"></script>
+<script src='/enable-totp.js'></script>

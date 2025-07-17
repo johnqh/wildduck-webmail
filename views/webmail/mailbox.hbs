@@ -2,7 +2,7 @@
 <h2 class="sub-header"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> {{mailbox.name}}</h2>
 
 <form method="post" action="/webmail/{{mailbox.id}}/settings">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
 
     {{> mailbox}}
 
@@ -31,7 +31,7 @@
       </div>
       <div class="modal-footer">
         <form method="post" action="/webmail/{{mailbox.id}}/delete">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
 
             <button type="button" class="btn btn-default" data-dismiss="modal">No, cancel</button>
             <button type="submit" class="btn btn-danger">Yes, delete</button>
