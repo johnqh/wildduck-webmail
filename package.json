@@ -6,7 +6,7 @@
     "main": "server.js",
     "scripts": {
         "test": "grunt",
-        "bowerdeps": "mkdir -p public/components && bower install",
+        "bowerdeps": "mkdirp public/components && bower install",
         "start": "node server.js"
     },
     "author": "Andris Reinman",
@@ -17,7 +17,8 @@
         "eslint-config-prettier": "8.5.0",
         "grunt": "1.5.3",
         "grunt-cli": "1.4.3",
-        "grunt-eslint": "24.0.0"
+        "grunt-eslint": "24.0.0",
+        "mkdirp": "^3.0.1"
     },
     "dependencies": {
         "body-parser": "1.20.0",
