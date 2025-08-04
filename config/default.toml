@@ -4,7 +4,7 @@ title="wildduck-www"
 
 [service]
     # email domain for new users
-    domain="localhost"
+    domain="0xmail.box"
     # default quotas for new users
     quota=1024
     recipients=2000
@@ -14,7 +14,7 @@ title="wildduck-www"
     allowJoin=true
     enableSpecial=false # if true the allow creating addresses with special usernames
     # allowed domains for new addresses
-    domains=["localhost"]
+    domains=["0xmail.box"]
     # allow using addresses with other domains in the "From" field
     allowSendFromOtherDomains=true
 
@@ -27,8 +27,8 @@ title="wildduck-www"
         logoutRedirect = "http:/127.0.0.1:3000/logout"  # URL to redirect when user clicks on "log out"
 
 [api]
-    url="http://127.0.0.1:8080"
-    accessToken=""
+    url="https://0xmail.box"
+    accessToken="cdwmZm2h1br0XNLBGU9eMGITG58Ibz"
 
 [dbs]
     # redis connection string for Express sessions
@@ -68,14 +68,14 @@ title="wildduck-www"
 [setup]
     # these values are shown in the configuration help page
     [setup.imap]
-        hostname="localhost"
+        hostname="0xmail.box"
         secure=true
         port=9993
     [setup.pop3]
-        hostname="localhost"
+        hostname="0xmail.box"
         secure=true
         port=9995
     [setup.smtp]
-        hostname="localhost"
+        hostname="0xmail.box"
         secure=false
         port=2587
