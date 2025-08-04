@@ -22,30 +22,59 @@ setup_node() {
     fi
 }
 
-# Function to set up Docker
 setup_docker() {
     echo "Checking Docker installation..."
-    if ! command -v docker &> /dev/null
+    if command -v docker &> /dev/null
     then
-        echo "Docker is not installed. Installing Docker..."
-        # Install Docker based on OS (example for Ubuntu/Debian)
-        sudo apt-get update
-        sudo apt-get install -y ca-certificates curl gnupg
-        sudo install -m 0755 -d /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        sudo chmod a+r /etc/apt/keyrings/docker.gpg
-        echo \
-          "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-          \"$(. /etc/os-release && echo "$VERSION_CODENAME")\" stable" | \
-          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt-get update
-        sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-        echo "Docker installed successfully."
-        # Add current user to docker group to run docker commands without sudo
-        sudo usermod -aG docker "$USER"
-        echo "Please log out and log back in for Docker group changes to take effect, or run 'newgrp docker'."
-    else
         echo "Docker is already installed."
+    else
+        echo "Docker is not installed. Attempting to install..."
+        OS=$(uname -s)
+
+        case "$OS" in
+            # macOS
+            Darwin)
+                echo "Detected macOS. Installing Docker via Homebrew..."
+                # Check for Homebrew, install if not present
+                if ! command -v brew &> /dev/null
+                then
+                    echo "Homebrew not found. Installing Homebrew..."
+                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                fi
+                
+                # Install Docker Desktop with Homebrew
+                brew install --cask docker
+                echo "Docker Desktop for macOS has been installed."
+                echo "Please open the Docker Desktop application from your Applications folder to complete the setup."
+                echo "After installation, restart your computer and ensure Docker Desktop is running."
+                exit
+                ;;
+
+            # Linux
+            Linux)
+                echo "Detected Linux. Installing Docker using the official convenience script..."
+                # The official convenience script from Docker works on a wide range of Linux distributions.
+                # It's not recommended for production, but is perfect for development environments.
+                curl -fsSL https://get.docker.com -o get-docker.sh
+                sudo sh get-docker.sh
+                rm get-docker.sh
+                
+                # Add current user to docker group
+                sudo usermod -aG docker "$USER"
+                echo "Docker installed successfully."
+                echo "Please log out and log back in for Docker group changes to take effect, or run 'newgrp docker'."
+                exit
+                ;;
+
+            # Windows (handled with a message, as command-line installation is not the primary method)
+            *)
+                echo "Unsupported OS or Windows detected."
+                echo "For Windows, the recommended method is to install Docker Desktop from the official website."
+                echo "Please download the installer from https://www.docker.com/products/docker-desktop/"
+                echo "After installation, restart your computer and ensure Docker Desktop is running."
+                exit 
+                ;;
+        esac
     fi
 }
 
@@ -86,6 +115,24 @@ setup_redis() {
 update_config() {
     echo "Updating application configuration..."
 
+    # Determine the correct sed in-place edit flag
+    SED_INPLACE_FLAG=""
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        SED_INPLACE_FLAG="-i ''"
+    else
+        SED_INPLACE_FLAG="-i"
+    fi
+
+    # Check for CONFIG_FILE existence
+    if [ -z "$CONFIG_FILE" ]; then
+        echo "Error: CONFIG_FILE variable is not set."
+        return 1
+    fi
+
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "Error: Configuration file '$CONFIG_FILE' not found."
+        return 1
+    fi
 
     read -p "Enter Wild Duck Server Hostname(e.g., 0xmail.com): " wildduck_hostname
     read -p "Enter Wild Duck Access Token: " wildduck_access_token
@@ -94,17 +141,18 @@ update_config() {
     echo "Updating $CONFIG_FILE with provided details..."
 
     API_URL="https://$wildduck_hostname"
+
     # Update [api] section
-    sed -i "s|url=\".*\"|url=\"$API_URL\"|" "$CONFIG_FILE" || echo "Failed to update url"
-    sed -i "s|accessToken=\".*\"|accessToken=\"$wildduck_access_token\"|" "$CONFIG_FILE"
+    eval sed $SED_INPLACE_FLAG "s|url=\".*\"|url=\"$API_URL\"|" "$CONFIG_FILE" || echo "Failed to update url"
+    eval sed $SED_INPLACE_FLAG "s|accessToken=\".*\"|accessToken=\"$wildduck_access_token\"|" "$CONFIG_FILE"
 
     # Update [service] section
-    sed -i "s|domain=\".*\"|domain=\"$user_domain\"|" "$CONFIG_FILE"
-    # Update the domains array - this assumes it's on a single line and only contains "localhost"
-    sed -i "s|domains=\[.*\]|domains=[\"$user_domain\"]|" "$CONFIG_FILE"
+    eval sed $SED_INPLACE_FLAG "s|domain=\".*\"|domain=\"$user_domain\"|" "$CONFIG_FILE"
+    # Update the domains array - this assumes it's on a single line
+    eval sed $SED_INPLACE_FLAG "s|domains=\[.*\]|domains=[\"$user_domain\"]|" "$CONFIG_FILE"
 
     # Update [setup] section hostnames
-    sed -i "s|hostname=\".*\"|hostname=\"$wildduck_hostname\"|" "$CONFIG_FILE"
+    eval sed $SED_INPLACE_FLAG "s|hostname=\".*\"|hostname=\"$wildduck_hostname\"|" "$CONFIG_FILE"
 
     echo "Use default ports for imap, pop3 and smtp? [Y/n]"
     IMAP_PORT="993"
@@ -112,28 +160,28 @@ update_config() {
     SMTP_PORT="465"
     read -r yn
     case "$yn" in
-      [Nn]* )
-          echo "Please enter the port for IMAP (default: 993):"
-          read -r input && IMAP_PORT="${input:-993}"
+        [Nn]* )
+            echo "Please enter the port for IMAP (default: 993):"
+            read -r input && IMAP_PORT="${input:-993}"
 
-          echo "Please enter the port for POP3 (default: 995):"
-          read -r input && POP3_PORT="${input:-995}"
+            echo "Please enter the port for POP3 (default: 995):"
+            read -r input && POP3_PORT="${input:-995}"
 
-          echo "Please enter the port for SMTP (default: 465):"
-          read -r input && SMTP_PORT="${input:-465}"
-          ;;
-      * )
-          echo "Using default ports for imap, pop3 and smtp"
-          ;;
+            echo "Please enter the port for SMTP (default: 465):"
+            read -r input && SMTP_PORT="${input:-465}"
+            ;;
+        * )
+            echo "Using default ports for imap, pop3 and smtp"
+            ;;
     esac
-    sed -i "/\[setup.imap\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$IMAP_PORT/"  "$CONFIG_FILE"
-    sed -i "/\[setup.pop3\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$POP3_PORT/"  "$CONFIG_FILE"
-    sed -i "/\[setup.smtp\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$SMTP_PORT/"  "$CONFIG_FILE"
 
+    # Update ports
+    eval sed $SED_INPLACE_FLAG "/\[setup.imap\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$IMAP_PORT/" "$CONFIG_FILE"
+    eval sed $SED_INPLACE_FLAG "/\[setup.pop3\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$POP3_PORT/" "$CONFIG_FILE"
+    eval sed $SED_INPLACE_FLAG "/\[setup.smtp\]/,/^ *port *=/ s/^\( *port *= *\).*/\1$SMTP_PORT/" "$CONFIG_FILE"
 
     echo "Configuration update complete. Check $CONFIG_FILE for changes."
 }
-
 
 install_dependencies() {
   npm install
